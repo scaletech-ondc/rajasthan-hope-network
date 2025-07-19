@@ -4,7 +4,7 @@ import { Heart, HandHeart, Users, Mail, DollarSign, Laptop } from "lucide-react"
 
 const GetInvolved = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-background to-primary/5">
+    <section id="get-involved" className="py-20 bg-gradient-to-b from-background to-primary/5">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">

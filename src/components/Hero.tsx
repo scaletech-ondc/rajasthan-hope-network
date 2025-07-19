@@ -3,6 +3,12 @@ import { Heart, Users, Database } from "lucide-react";
 import heroImage from "@/assets/hero-community.jpg";
 
 const Hero = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -32,11 +38,21 @@ const Hero = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button variant="hero" size="lg" className="text-lg px-8 py-4">
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="text-lg px-8 py-4"
+            onClick={() => scrollToSection('get-involved')}
+          >
             <Heart className="mr-2 h-5 w-5" />
             Support Our Mission
           </Button>
-          <Button variant="outline" size="lg" className="text-lg px-8 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="text-lg px-8 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20"
+            onClick={() => scrollToSection('impact')}
+          >
             <Database className="mr-2 h-5 w-5" />
             View Our Impact
           </Button>

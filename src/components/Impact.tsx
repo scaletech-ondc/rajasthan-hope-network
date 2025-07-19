@@ -12,7 +12,7 @@ const Impact = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-secondary/30 to-background">
+    <section id="impact" className="py-20 bg-gradient-to-b from-secondary/30 to-background">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
