@@ -53,7 +53,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-foreground mb-2">Call Us</h4>
-                      <p className="text-muted-foreground mb-1">+91 9876 543 210</p>
+                      <p className="text-muted-foreground mb-1">+91 7597 365 803</p>
                       <p className="text-sm text-muted-foreground">24/7 Emergency Hotline</p>
                     </div>
                   </div>
@@ -167,7 +167,7 @@ const Contact = () => {
           </p>
           <Button variant="compassion" size="lg">
             <Phone className="mr-2 h-5 w-5" />
-            Emergency Hotline: +91 9876 543 210
+            Emergency Hotline: +91 7597 365 803
           </Button>
         </div>
       </div>
