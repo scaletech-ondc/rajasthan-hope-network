@@ -1,8 +1,63 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "I need help/assistance",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from("contacts")
+        .insert({
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Message sent successfully!",
+        description: "We've received your message and will get back to you soon.",
+      });
+
+      // Reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        subject: "I need help/assistance",
+        message: ""
+      });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error sending message",
+        description: "Please try again or contact us directly.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-primary/5 to-secondary/20">
       <div className="max-w-6xl mx-auto px-6">
@@ -98,22 +153,28 @@ const Contact = () => {
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-6 text-foreground">Send Us a Message</h3>
                 
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium mb-2 text-foreground">First Name</label>
                       <input 
                         type="text" 
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({...formData, firstName: e.target.value})}
                         className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background text-foreground"
                         placeholder="Enter your first name"
+                        required
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-2 text-foreground">Last Name</label>
                       <input 
                         type="text" 
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({...formData, lastName: e.target.value})}
                         className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background text-foreground"
                         placeholder="Enter your last name"
+                        required
                       />
                     </div>
                   </div>
@@ -122,14 +183,22 @@ const Contact = () => {
                     <label className="block text-sm font-medium mb-2 text-foreground">Email</label>
                     <input 
                       type="email" 
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
                       className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background text-foreground"
                       placeholder="Enter your email"
+                      required
                     />
                   </div>
                   
                   <div>
                     <label className="block text-sm font-medium mb-2 text-foreground">Subject</label>
-                    <select className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background text-foreground">
+                    <select 
+                      value={formData.subject}
+                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                      className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background text-foreground"
+                      required
+                    >
                       <option>I need help/assistance</option>
                       <option>I want to volunteer</option>
                       <option>I want to donate</option>
@@ -143,14 +212,23 @@ const Contact = () => {
                     <label className="block text-sm font-medium mb-2 text-foreground">Message</label>
                     <textarea 
                       rows={5}
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
                       className="w-full px-4 py-3 border border-input rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors bg-background text-foreground"
                       placeholder="Tell us how we can help you or how you'd like to help us..."
+                      required
                     ></textarea>
                   </div>
                   
-                  <Button variant="hero" className="w-full" size="lg">
+                  <Button 
+                    type="submit" 
+                    variant="hero" 
+                    className="w-full" 
+                    size="lg"
+                    disabled={isSubmitting}
+                  >
                     <Send className="mr-2 h-5 w-5" />
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>
